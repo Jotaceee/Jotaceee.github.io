@@ -422,13 +422,13 @@ function register_value_serialize(architecture) {
 }
 var is_ga_initialize = false;
 function creator_ga(category, action, label) {
-  if (typeof gtag !== "undefined") {
-    gtag("event", label, {
-      event_category: "creator_" + category,
-      event_action: action,
-      event_label: label,
-    });
-  }
+  // if (typeof gtag !== "undefined") {
+  //   gtag("event", label, {
+  //     event_category: "creator_" + category,
+  //     event_action: action,
+  //     event_label: label,
+  //   });
+  // }
 }
 function preload_load_example(data, url) {
   if (url == null) {
