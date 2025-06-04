@@ -96,7 +96,7 @@ var vectorExp = /(v\d+) (<-) 0x([0-9A-Fa-f]+)/;
 var memoryExp = /mem\[0x([0-9A-Fa-f]+)\]\s*(<-|->)\s*0x([0-9A-Fa-f]+)/;
 var CSRTypeExp = /(CSR\S*)\s+(\S+)\s+(\S+)\s+(0x)([\dA-Fa-f]{1,16})/;
 var CSRExp = /^(CSR)\s+(\w+)\s+(<-|->)\s+0x([0-9a-fA-F]+)(?:\s+(.*))?$/;
-var jumpExp = /Next_PC:\s*(0x[0-9a-fA-F]+)/;
+var jumpExp = /Next_PC:\s*0x([0-9a-fA-F]+)/;
 // var displayExp = /^[A-Za-z\s]+:\s*(.*)$/;
 var displayExp = /^([\w\s]+):\s*(.*)$/;       
 var userMode = false;
@@ -148,6 +148,8 @@ Module['print'] = function (message) {
   let jumpMatch = message.match(jumpExp);
 
   if (jumpMatch){
+    jumpMatch[1] = "0x" + jumpMatch[1].replace(/^0+/, '');
+    console.log(jumpMatch);
     const current_ins = instructions.findIndex(insn => insn.Address === (jumpMatch[1].toLowerCase()));
     
       for (var i = 0; i < instructions.length; i++){
@@ -4541,8 +4543,8 @@ var wasmImports = {
 var wasmExports;
 createWasm();
 var ___wasm_call_ctors = createExportWrapper("__wasm_call_ctors", 0);
-var _malloc = createExportWrapper("malloc", 1);
-var _free = createExportWrapper("free", 1);
+var _malloc = (Module["_malloc"] = createExportWrapper("malloc", 1));
+var _free = (Module["_free"] = createExportWrapper("free", 1));
 var _send_int_to_C = (Module["_send_int_to_C"] = createExportWrapper(
   "send_int_to_C",
   1,

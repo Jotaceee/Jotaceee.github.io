@@ -3250,11 +3250,12 @@ function assembly_compiler()
               visible: true,
               hide: false,
             });
+            console.log("entrada: ", entry_elf);
             if(is_32b_arch){
               if (dumptextinstructions[i][0] === entry_elf)
                 instructions[i]._rowVariant = 'success';
             } else {
-              if ((dumptextinstructions[i][0].padStart(16, '0')) === entry_elf)
+              if ((dumptextinstructions[i][0]) === entry_elf)
                 instructions[i]._rowVariant = 'success';
             }
           }
@@ -7405,9 +7406,15 @@ function kbd_read_string(keystroke, params) {
   
   stringToUTF8(value, buffer, lengthBytes);
   
-  Module._send_string_to_C(buffer);
+  if (is_32b_arch){
+    Module._send_string_to_C(buffer);
+    Module._free(buffer);
+  }
+  else{
+    Module._send_string_to_C(BigInt(buffer));
+    Module._free(BigInt(buffer));
+  }
   
-  Module._free(buffer);
   execution_mode_run = last_execution_mode_run;
   last_execution_mode_run = -1;
   return value;
