@@ -91,16 +91,16 @@ function resetenvironment (value){
   if (can_reset || value === 2) {
       clean_environment();
       if (is_32b_arch){
-        scriptas = document.querySelector('script[src="'+ window.location.href +'js/toolchain_compiler/32bits/as-new.js"]');
-        scriptld = document.querySelector('script[src="'+ window.location.href +'js/toolchain_compiler/32bits/ld-new.js"]');
-        scriptsail = document.querySelector('script[src="'+ window.location.href +'js/toolchain_compiler/32bits/riscv_sim_RV32.js"]');
-        scriptdump = document.querySelector('script[src="'+ window.location.href +'js/toolchain_compiler/32bits/objdump.js"]');
+        scriptas = document.querySelector('script[src="'+ window.location.origin +'js/toolchain_compiler/32bits/as-new.js"]');
+        scriptld = document.querySelector('script[src="'+ window.location.origin +'js/toolchain_compiler/32bits/ld-new.js"]');
+        scriptsail = document.querySelector('script[src="'+ window.location.origin +'js/toolchain_compiler/32bits/riscv_sim_RV32.js"]');
+        scriptdump = document.querySelector('script[src="'+ window.location.origin +'js/toolchain_compiler/32bits/objdump.js"]');
       }
       else {
-        scriptas = document.querySelector('script[src="'+ window.location.href +'js/toolchain_compiler/64bits/as-new.js"]');
-        scriptld = document.querySelector('script[src="'+ window.location.href +'js/toolchain_compiler/64bits/ld-new.js"]');
-        scriptsail = document.querySelector('script[src="'+ window.location.href +'js/toolchain_compiler/64bits/riscv_sim_RV64.js"]');
-        scriptdump = document.querySelector('script[src="'+ window.location.href +'js/toolchain_compiler/64bits/objdump.js"]');
+        scriptas = document.querySelector('script[src="'+ window.location.origin +'/js/toolchain_compiler/64bits/as-new.js"]');
+        scriptld = document.querySelector('script[src="'+ window.location.origin +'/js/toolchain_compiler/64bits/ld-new.js"]');
+        scriptsail = document.querySelector('script[src="'+ window.location.origin +'/js/toolchain_compiler/64bits/riscv_sim_RV64.js"]');
+        scriptdump = document.querySelector('script[src="'+ window.location.origin +'/js/toolchain_compiler/64bits/objdump.js"]');
       }
 
       if(scriptas)
@@ -131,9 +131,9 @@ function resetenvironment (value){
       insn_number = undefined;
       scriptas = document.createElement('script');
       if (is_32b_arch)
-        scriptas.src = window.location.href +'js/toolchain_compiler/32bits/as-new.js';
+        scriptas.src = window.location.origin +'/js/toolchain_compiler/32bits/as-new.js';
       else
-        scriptas.src = window.location.href +'js/toolchain_compiler/64bits/as-new.js';
+        scriptas.src = window.location.origin +'/js/toolchain_compiler/64bits/as-new.js';
       scriptas.async = true;
       scriptas.type = 'text/javascript';
       document.head.appendChild(scriptas);
@@ -147,9 +147,9 @@ function resetenvironment (value){
       runtimeInitialized = false;
       scriptsail = document.createElement('script');
       if (is_32b_arch)
-        scriptsail.src = window.location.href +'js/toolchain_compiler/32bits/riscv_sim_RV32.js';
+        scriptsail.src = window.location.origin +'/js/toolchain_compiler/32bits/riscv_sim_RV32.js';
       else
-        scriptsail.src = window.location.href +'js/toolchain_compiler/64bits/riscv_sim_RV64.js';
+        scriptsail.src = window.location.origin +'/js/toolchain_compiler/64bits/riscv_sim_RV64.js';
       scriptsail.async = true;
       scriptsail.type = 'text/javascript';
       document.head.appendChild(scriptsail);
@@ -186,9 +186,9 @@ function resetenvironment (value){
         scriptas = document.createElement('script');
         scriptas.id = 'as-new';
         if (is_32b_arch)
-          scriptas.src = window.location.href +'js/toolchain_compiler/32bits/as-new.js';
+          scriptas.src = window.location.origin +'/js/toolchain_compiler/32bits/as-new.js';
         else
-          scriptas.src = window.location.href +'js/toolchain_compiler/64bits/as-new.js';
+          scriptas.src = window.location.origin +'/js/toolchain_compiler/64bits/as-new.js';
         scriptas.async = true;
         scriptas.type = 'text/javascript';
         document.head.appendChild(scriptas);
@@ -224,9 +224,9 @@ async function dissamble_binary(maxAttemps = 50) {
     clean_environment();
     scriptdump = document.createElement('script');
     if (is_32b_arch)
-      scriptdump.src = window.location.href +'js/toolchain_compiler/32bits/objdump.js';
+      scriptdump.src = window.location.origin +'/js/toolchain_compiler/32bits/objdump.js';
     else
-      scriptdump.src = window.location.href +'js/toolchain_compiler/64bits/objdump.js';
+      scriptdump.src = window.location.origin +'/js/toolchain_compiler/64bits/objdump.js';
     scriptdump.async = true;
     scriptdump.id = 'objdump';
     scriptdump.type = 'text/javascript';
@@ -238,9 +238,9 @@ async function dissamble_binary(maxAttemps = 50) {
     clean_environment();
     scriptsail = document.createElement('script');
     if (is_32b_arch)
-      scriptsail.src = window.location.href +'js/toolchain_compiler/32bits/riscv_sim_RV32.js';
+      scriptsail.src = window.location.origin +'/js/toolchain_compiler/32bits/riscv_sim_RV32.js';
     else
-      scriptsail.src = window.location.href +'js/toolchain_compiler/64bits/riscv_sim_RV64.js';
+      scriptsail.src = window.location.origin +'/js/toolchain_compiler/64bits/riscv_sim_RV64.js';
     scriptsail.async = true;
     if(is_32b_arch)
       scriptsail.id = 'riscv_sim_RV32';
@@ -267,9 +267,9 @@ function preprocess_run(asfilen, ascode, fpd, vec){
   }
   scriptld = document.createElement('script');
   if(is_32b_arch)
-    scriptld.src = window.location.href +'js/toolchain_compiler/32bits/ld-new.js';
+    scriptld.src = window.location.origin +'/js/toolchain_compiler/32bits/ld-new.js';
   else
-    scriptld.src = window.location.href +'js/toolchain_compiler/64bits/ld-new.js';
+    scriptld.src = window.location.origin +'/js/toolchain_compiler/64bits/ld-new.js';
   scriptld.async = true;
   scriptld.id = 'ld-new';
   scriptld.type = 'text/javascript';
@@ -296,9 +296,9 @@ async function waitForFunction(maxAttemps = 50) {
     // retornas una promesa mala
     scriptld = document.createElement('script');
     if (is_32b_arch)
-      scriptld.src = window.location.href +'js/toolchain_compiler/32bits/ld-new.js';
+      scriptld.src = window.location.origin +'/js/toolchain_compiler/32bits/ld-new.js';
     else
-      scriptld.src = window.location.href +'js/toolchain_compiler/64bits/ld-new.js';
+      scriptld.src = window.location.origin +'/js/toolchain_compiler/64bits/ld-new.js';
     scriptld.async = true;
     scriptld.id = 'ld-new';
     scriptld.type = 'text/javascript';
@@ -308,9 +308,9 @@ async function waitForFunction(maxAttemps = 50) {
   else {
     scriptdump = document.createElement('script');
     if (is_32b_arch)
-      scriptdump.src = window.location.href +'js/toolchain_compiler/32bits/objdump.js';
+      scriptdump.src = window.location.origin +'/js/toolchain_compiler/32bits/objdump.js';
     else
-      scriptdump.src = window.location.href +'js/toolchain_compiler/64bits/objdump.js';
+      scriptdump.src = window.location.origin +'/js/toolchain_compiler/64bits/objdump.js';
     scriptdump.async = true;
     scriptdump.id = 'objdump';
     scriptdump.type = 'text/javascript';
@@ -8984,12 +8984,12 @@ var uielto_preload_architecture = {
           if(window.Module !== undefined)
             clean_environment();
           scriptas = document.createElement('script');
-          scriptas.src = window.location.href + 'js/toolchain_compiler/32bits/as-new.js';
+          scriptas.src = window.location.origin + '/js/toolchain_compiler/32bits/as-new.js';
           scriptas.async = true;
           scriptas.type = 'text/javascript';
           document.head.appendChild(scriptas);
   
-          fetch(window.location.href+'js/toolchain_compiler/32bits/linker32.ld')
+          fetch(window.location.origin+'/js/toolchain_compiler/32bits/linker32.ld')
             .then(response => {
             return response.text();})
             .then(data => {
@@ -9007,11 +9007,11 @@ var uielto_preload_architecture = {
             clean_environment();
           
           scriptas = document.createElement('script');
-          scriptas.src = window.location.href + 'js/toolchain_compiler/64bits/as-new.js';
+          scriptas.src = window.location.origin + '/js/toolchain_compiler/64bits/as-new.js';
           scriptas.async = true;
           scriptas.type = 'text/javascript';
           document.head.appendChild(scriptas);
-          fetch(window.location.href+'js/toolchain_compiler/64bits/linker64.ld')
+          fetch(window.location.origin+'/js/toolchain_compiler/64bits/linker64.ld')
             .then(response => {
             return response.text();})
             .then(data => {
