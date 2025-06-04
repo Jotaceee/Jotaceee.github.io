@@ -5253,14 +5253,14 @@ if (Module["preInit"]) {
 // shouldRunNow refers to calling main(), not run().
 var shouldRunNow = false;
 
-function preprocess_ld(objectfile, linkerfile, lib_file = undefined){
+function preprocess_ld(objectfile, linkerfile, lib_file = []){
   
   console.log("Antes");
   outputfile = undefined;
   objfile = objectfile;
   linkfile = linkerfile;
   libnames.length = 0;
-  if(lib_file.length !== 0){
+  if(lib_file.length !== 0 ){
     for (let i = 0; i < lib_file.length; i++) {
       if (lib_file[i].apply)
         libnames.push(lib_file[i].name);

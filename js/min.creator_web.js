@@ -602,20 +602,16 @@ function hex2char8(hexvalue) {
   return characters;
 }
 function hex2float(hexvalue) {
-  var value = hexvalue.split("x");
-  if (typeof value[1] != "undefined" && value[1].length > 8) {
-    value[1] = value[1].substring(0, 8);
+  if (hexvalue.startsWith("0x")) hexvalue = hexvalue.slice(2);
+  // else hexvalue = hexvalue.slice(8);
+
+  const float_bytes = new Uint8Array(4);
+  for (let i = 0; i < 4; i++){
+    float_bytes[i] = parseInt(hexvalue.slice(i * 2, i * 2 + 2), 16);
   }
-  var value_bit = "";
-  for (var i = 0; i < value[1].length; i++) {
-    var aux = value[1].charAt(i);
-    aux = parseInt(aux, 16).toString(2).padStart(4, "0");
-    value_bit = value_bit + aux;
-  }
-  value_bit = value_bit.padStart(32, "0");
-  var buffer = new ArrayBuffer(4);
-  new Uint8Array(buffer).set(value_bit.match(/.{8}/g).map(binaryStringToInt));
-  return new DataView(buffer).getFloat32(0, false);
+
+  var view = new DataView(float_bytes.buffer);
+  return view.getFloat32(0, false);
 }
 function uint_to_float32(value) {
   var buf = new ArrayBuffer(4);
@@ -701,17 +697,16 @@ function bin2hex(s) {
   return ret;
 }
 function hex2double(hexvalue) {
-  var value = hexvalue.split("x");
-  var value_bit = "";
-  for (var i = 0; i < value[1].length; i++) {
-    var aux = value[1].charAt(i);
-    aux = parseInt(aux, 16).toString(2).padStart(4, "0");
-    value_bit = value_bit + aux;
+  if (hexvalue.startsWith("0x")) hexvalue = hexvalue.slice(2);
+  // else hexvalue = hexvalue.slice(8);
+
+  const double_bytes = new Uint8Array(8);
+  for (let i = 0; i < 8; i++){
+    double_bytes[i] = parseInt(hexvalue.slice(i * 2, i * 2 + 2), 16);
   }
-  value_bit = value_bit.padStart(64, "0");
-  var buffer = new ArrayBuffer(8);
-  new Uint8Array(buffer).set(value_bit.match(/.{8}/g).map(binaryStringToInt));
-  return new DataView(buffer).getFloat64(0, false);
+
+  var view = new DataView(double_bytes.buffer);
+  return view.getFloat64(0, false);
 }
 function float2int_v2(value) {
   return parseInt(float2bin(value), 2);
@@ -1834,6 +1829,8 @@ function writeRegister(value, indexComp, indexElem, register_type, force=0) {
             bi_floatToBigInt(value);
         }
         if (register_type === "DFP-Reg") {
+          console.log(value);
+          console.log(value.toString(16));
           architecture.components[indexComp].elements[indexElem].value =
             bi_doubleToBigInt(value);
         }
@@ -10698,13 +10695,13 @@ var uielto_load_library = {
       for (var i = 0; i < files.length; i++) {
         file = files[i];
         reader = new FileReader();
+        var arrayBuffer;
         reader.onload = function (ev) {
-          const arrayBuffer = ev.target.result;
+          arrayBuffer = ev.target.result;
           console.log("nombre: ", file);
-          // update_binary = new Uint8Array(arrayBuffer);
           app.update_binary.push({name : file.name, lib :new Uint8Array(arrayBuffer), apply: true});
+        
         };
-        // reader.onloadend = onFileLoaded;
         reader.readAsArrayBuffer(file);
         // update_binary = new Uint8Array(code_binary);
       }
@@ -13287,6 +13284,7 @@ var uielto_register_popover = {
                         ret = hex2float("0x"+(((register.value).toString(16)).padStart(8, "0")));
                       }
                       else {
+                        console.log(register);
                         ret = bi_BigIntTofloat(register.value);
                       }
                       break;
